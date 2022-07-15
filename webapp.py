@@ -64,23 +64,25 @@ df_change = pd.concat([df_coins.symbol, #Creating a new df with symbol and chang
 st.write(f"## Plot {percent_timeframe} for {selected_coin}") #Title of the plot
 
 #Filtering and creating plots
-if percent_timeframe == "90d" : 
-    df_change["quote_USD_percent_change_90d"].plot(kind="barh")
-    st.pyplot(plt)
-elif percent_timeframe == "60d" : 
-    df_change["quote_USD_percent_change_60d"].plot(kind="barh")
-    st.pyplot(plt)
-elif percent_timeframe == "30d" : 
-    df_change["quote_USD_percent_change_30d"].plot(kind="barh")
-    st.pyplot(plt)
-elif percent_timeframe == "7d" : 
-    df_change["quote_USD_percent_change_7d"].plot(kind="barh")
-    st.pyplot(plt)
-elif percent_timeframe == "24h" : 
-    df_change["quote_USD_percent_change_24h"].plot(kind="barh")
-    st.pyplot(plt)
-elif percent_timeframe == "1h" : 
-    df_change["quote_USD_percent_change_1h"].plot(kind="barh")
-    st.pyplot(plt)
-else: 
+#Using try and except and when user doesnt select coin theres an error
+try : 
+    if percent_timeframe == "90d" : 
+        df_change["quote_USD_percent_change_90d"].plot(kind="barh")
+        st.pyplot(plt)
+    elif percent_timeframe == "60d" : 
+        df_change["quote_USD_percent_change_60d"].plot(kind="barh")
+        st.pyplot(plt)
+    elif percent_timeframe == "30d" : 
+        df_change["quote_USD_percent_change_30d"].plot(kind="barh")
+        st.pyplot(plt)
+    elif percent_timeframe == "7d" : 
+        df_change["quote_USD_percent_change_7d"].plot(kind="barh")
+        st.pyplot(plt)
+    elif percent_timeframe == "24h" : 
+        df_change["quote_USD_percent_change_24h"].plot(kind="barh")
+        st.pyplot(plt)
+    elif percent_timeframe == "1h" : 
+        df_change["quote_USD_percent_change_1h"].plot(kind="barh")
+        st.pyplot(plt)
+except: 
     pass
