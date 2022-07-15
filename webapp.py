@@ -1,7 +1,7 @@
 #Importing Libraries
 import streamlit as st 
 import pandas as pd 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import subprocess
 import sys
 import base64
@@ -37,6 +37,17 @@ st.sidebar.header("Query the data")
 selected_coin = st.sidebar.multiselect("Choose your coin (Symbol)", df["symbol"])
 df_coins = df[ (df["symbol"].isin(selected_coin)) ] # Filtering data
 
+st.dataframe(df_coins) #Showing the dataframe with the selected coins
+
+# Download CSV data
+def filedownload(df):
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
+    href = f'<a href="data:file/csv;base64,{b64}" download="crypto.csv">Download CSV File</a>'
+    return href
+
+st.markdown(filedownload(df_coins), unsafe_allow_html=True)
+
 #The user chooses the percentage change time frame
 percent_timeframe = st.sidebar.selectbox("Percent change time frame",
                                     ["90d","60d","30d","7d","24h","1h"])
@@ -51,13 +62,26 @@ df_change = pd.concat([df_coins.symbol, #Creating a new df with symbol and chang
     df_coins.quote_USD_percent_change_1h,
 ], axis=1)
 
-st.dataframe(df_coins) #Showing the dataframe with the selected coins
+st.write(f"## Plot {percent_timeframe} for {selected_coin}") #Title of the plot
 
-# Download CSV data
-def filedownload(df):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="crypto.csv">Download CSV File</a>'
-    return href
-
-st.markdown(filedownload(df_coins), unsafe_allow_html=True)
+#Filtering and creating plots
+if percent_timeframe == "90d" : 
+    df_change["quote_USD_percent_change_90d"].plot(kind="bar")
+    st.pyplot(plt)
+elif percent_timeframe == "60d" : 
+    df_change["quote_USD_percent_change_60d"].plot(kind="bar")
+    st.pyplot(plt)
+elif percent_timeframe == "30d" : 
+    df_change["quote_USD_percent_change_30d"].plot(kind="bar")
+    st.pyplot(plt)
+elif percent_timeframe == "7d" : 
+    df_change["quote_USD_percent_change_7d"].plot(kind="bar")
+    st.pyplot(plt)
+elif percent_timeframe == "24h" : 
+    df_change["quote_USD_percent_change_24h"].plot(kind="bar")
+    st.pyplot(plt)
+elif percent_timeframe == "60d" : 
+    df_change["quote_USD_percent_change_1h"].plot(kind="bar")
+    st.pyplot(plt)
+else: 
+    pass
