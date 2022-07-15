@@ -36,7 +36,6 @@ st.sidebar.header("Query the data")
 #Lets the user select their coin
 selected_coin = st.sidebar.multiselect("Choose your coin (Symbol)", df["symbol"])
 df_coins = df[ (df["symbol"].isin(selected_coin)) ] # Filtering data
-
 st.dataframe(df_coins) #Showing the dataframe with the selected coins
 
 # Download CSV data
@@ -80,7 +79,7 @@ elif percent_timeframe == "7d" :
 elif percent_timeframe == "24h" : 
     df_change["quote_USD_percent_change_24h"].plot(kind="bar")
     st.pyplot(plt)
-elif percent_timeframe == "60d" : 
+elif percent_timeframe == "1h" : 
     df_change["quote_USD_percent_change_1h"].plot(kind="bar")
     st.pyplot(plt)
 else: 
