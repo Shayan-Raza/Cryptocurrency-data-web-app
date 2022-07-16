@@ -86,3 +86,24 @@ try :
         st.pyplot(plt)
 except: 
     pass
+
+# Price displayer
+st.write("## Prices")
+
+df_price = pd.concat([df_coins.symbol, #Df with symbol of the coin and its price
+    df_coins.quote_USD_price,
+], axis=1,)
+
+#Preparing variable for displaying
+price = df_price["quote_USD_price"]
+price = price.to_string(index=False)
+price = price.split()
+
+#Displaying the price
+#Using for loop to display price of every coin selected
+
+counter = 0 #Counter will be used later for indexing
+
+for coin in selected_coin : 
+    st.write(f"The price for {coin} is {price[counter]}")
+    counter = counter + 1 
