@@ -94,16 +94,21 @@ df_price = pd.concat([df_coins.symbol, #Df with symbol of the coin and its price
     df_coins.quote_USD_price,
 ], axis=1,)
 
+#Sort df by index
+df_price = df_price.sort_index(axis=0)
+print(df_price)
+
 #Preparing variable for displaying
 price = df_price["quote_USD_price"]
 price = price.to_string(index=False)
 price = price.split()
 
+selected_coin = df_price.symbol
 #Displaying the price
-#Using for loop to display price of every coin selected
 
 counter = 0 #Counter will be used later for indexing
 
+#Using for loop to display price of every coin selected
 for coin in selected_coin : 
     st.write(f"The price for {coin} is {price[counter]}")
     counter = counter + 1 
