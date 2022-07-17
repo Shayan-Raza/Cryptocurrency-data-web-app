@@ -6,7 +6,7 @@ import subprocess
 import sys
 import base64
 
-st.title("Crypto currency web-app Data") #Title of the webpage
+st.title("Crypto currency web-app") #Title of the webpage
 
 df = pd.read_csv("/home/shayan/Desktop/Code/Data Science/Cryptocurrency-data-web-app/Data.csv") #Importing our CSV
 df = df.iloc[: , 1:] #Removing the first column
@@ -96,7 +96,6 @@ df_price = pd.concat([df_coins.symbol, #Df with symbol of the coin and its price
 
 #Sort df by index
 df_price = df_price.sort_index(axis=0)
-print(df_price)
 
 #Preparing variable for displaying
 price = df_price["quote_USD_price"]
@@ -110,5 +109,5 @@ counter = 0 #Counter will be used later for indexing
 
 #Using for loop to display price of every coin selected
 for coin in selected_coin : 
-    st.write(f"The price for {coin} is {price[counter]}")
+    st.write(f"The price for {coin} is ${price[counter]}")
     counter = counter + 1 
