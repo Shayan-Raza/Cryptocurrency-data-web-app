@@ -33,6 +33,10 @@ else :
 #Title of the sidebar
 st.sidebar.header("Query the data")
 
+no_of_top_coins = st.sidebar.slider("no_of_top_coins", min_value=1, max_value=100) 
+
+counter = 0 #Counter will be used later for indexing
+
 #Lets the user select their coin
 selected_coin = st.sidebar.multiselect("Choose your coin (Symbol)", df["symbol"])
 df_coins = df[ (df["symbol"].isin(selected_coin)) ] # Filtering data
@@ -50,6 +54,46 @@ st.markdown(filedownload(df_coins), unsafe_allow_html=True)
 #The user chooses the percentage change time frame
 percent_timeframe = st.sidebar.selectbox("Percent change time frame",
                                     ["90d","60d","30d","7d","24h","1h"])
+
+#Top coins change in time_frame selected
+st.write(f"## Top coins change in {percent_timeframe}")
+
+#Preparing variables for top values based on percent_timeframe
+df_top_change = pd.concat([df.name, #Df with name and change
+    df.quote_USD_percent_change_90d, 
+    df.quote_USD_percent_change_60d, 
+    df.quote_USD_percent_change_30d, 
+    df.quote_USD_percent_change_7d, 
+    df.quote_USD_percent_change_24h,
+    df.quote_USD_percent_change_1h,
+], axis=1)
+
+#Finding the top values for each column
+if percent_timeframe == "90d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
+elif percent_timeframe == "60d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_60d"], ascending=False)
+elif percent_timeframe == "30d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_30d"], ascending=False)
+elif percent_timeframe == "7d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_7d"], ascending=False)
+elif percent_timeframe == "24h" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_24h"], ascending=False)
+elif percent_timeframe == "1h" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_1h"], ascending=False)
+else : 
+    pass
+
+#Preparing data for displaying the top 10 currencies 
+price = df_top_change["name"]
+price = price.to_string(index=False)
+price = price.split()
+
+top_coins = price[-no_of_top_coins:]
+
+#Displaying the top values depending on the column selected
+for coins in top_coins : 
+    st.write(f"{coins}")
 
 #Preparing data for filtering according to percentage change
 df_change = pd.concat([df_coins.symbol, #Creating a new df with symbol and change columns 
@@ -87,6 +131,7 @@ try :
 except: 
     pass
 
+
 # Price displayer
 st.write("## Prices")
 
@@ -103,10 +148,8 @@ price = price.to_string(index=False)
 price = price.split()
 
 selected_coin = df_price.symbol
+
 #Displaying the price
-
-counter = 0 #Counter will be used later for indexing
-
 #Using for loop to display price of every coin selected
 for coin in selected_coin : 
     st.write(f"The price for {coin} is ${price[counter]}")
