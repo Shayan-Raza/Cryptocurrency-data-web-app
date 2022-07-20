@@ -5,6 +5,10 @@
 - [Functions](#functions)
 
 # Installation
+*Requirements*
+```
+sudo python3 -m pip install -r requirements.txt
+```
 *Clone the repo*
 ```
 git clone https://github.com/Shayan-Raza/Cryptocurrency-data-web-app.git
