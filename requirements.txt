@@ -1,0 +1,6 @@
+pandas
+pip install pandas
+
+streamlit
+pip install streamlit
+
