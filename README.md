@@ -5,10 +5,6 @@
 - [Functions](#functions)
 
 # Installation
-*Requirements*
-```
-sudo python3 -m pip install -r requirements.txt
-```
 *Clone the repo*
 ```
 git clone https://github.com/Shayan-Raza/Cryptocurrency-data-web-app.git
@@ -45,6 +41,9 @@ api="" #key in ""
 
 # Functions
 Functions that are available in the webapp
+
+### Preview
+![Preview](previews/fullscreen.png)
 
 ### Refresh data
 ![Refresh data](previews/refresh_data_button.png)
