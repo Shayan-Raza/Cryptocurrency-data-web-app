@@ -6,11 +6,13 @@ import subprocess
 import sys
 import base64
 
-st.title("Crypto currency web-app") #Title of the webpage
+counter = 0
 
-df = pd.read_csv("/home/shayan/Desktop/Code/Data Science/Cryptocurrency-data-web-app/Data.csv") #Importing our CSV
-df = df.iloc[: , 1:] #Removing the first column
-df.columns = ['id', 'name', 'symbol', 'slug', 'num_market_pairs', 'date_added', #Renaming columns for efficiency
+st.title("Crypto currency web-app")
+
+df = pd.read_csv("Data.csv") 
+df = df.iloc[: , 1:]
+df.columns = ['id', 'name', 'symbol', 'slug', 'num_market_pairs', 'date_added',
        'tags', 'max_supply', 'circulating_supply', 'total_supply', 'platform',
        'cmc_rank', 'self_reported_circulating_supply',
        'self_reported_market_cap', 'tvl_ratio', 'last_updated',
@@ -26,21 +28,20 @@ df.columns = ['id', 'name', 'symbol', 'slug', 'num_market_pairs', 'date_added', 
 
 #Creating a button that refreshes the data by running the script
 if st.button("Refresh Data") : 
-    subprocess.run([f"{sys.executable}", "data.py"]) #Runs the script again to get the latest data
+    subprocess.run([f"{sys.executable}", "data.py"]) 
 else : 
     pass
 
 #Title of the sidebar
 st.sidebar.header("Query the data")
 
-no_of_top_coins = st.sidebar.slider("no_of_top_coins", min_value=1, max_value=100) 
-
-counter = 0 #Counter will be used later for indexing
-
 #Lets the user select their coin
 selected_coin = st.sidebar.multiselect("Choose your coin (Symbol)", df["symbol"])
-df_coins = df[ (df["symbol"].isin(selected_coin)) ] # Filtering data
-st.dataframe(df_coins) #Showing the dataframe with the selected coins
+df_coins = df[ (df["symbol"].isin(selected_coin)) ] 
+st.dataframe(df_coins) 
+
+#Lets the user select the number of top coins they watn to display
+no_of_top_coins = st.sidebar.slider("no_of_top_coins", min_value=1, max_value=100) 
 
 # Download CSV data
 def filedownload(df):
@@ -68,6 +69,11 @@ df_top_change = pd.concat([df.name, #Df with name and change
     df.quote_USD_percent_change_1h,
 ], axis=1)
 
+price = df_top_change["name"]
+price = price.to_string(index=False)
+price = price.split()
+
+top_coins = price[-no_of_top_coins:]
 #Finding the top values for each column
 if percent_timeframe == "90d" : 
     df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
@@ -84,19 +90,12 @@ elif percent_timeframe == "1h" :
 else : 
     pass
 
-#Preparing data for displaying the top 10 currencies 
-price = df_top_change["name"]
-price = price.to_string(index=False)
-price = price.split()
-
-top_coins = price[-no_of_top_coins:]
-
 #Displaying the top values depending on the column selected
 for coins in top_coins : 
     st.write(f"{coins}")
 
 #Preparing data for filtering according to percentage change
-df_change = pd.concat([df_coins.symbol, #Creating a new df with symbol and change columns 
+df_change = pd.concat([df_coins.symbol,  
     df_coins.quote_USD_percent_change_90d, 
     df_coins.quote_USD_percent_change_60d, 
     df_coins.quote_USD_percent_change_30d, 
@@ -135,7 +134,7 @@ except:
 # Price displayer
 st.write("## Prices")
 
-df_price = pd.concat([df_coins.symbol, #Df with symbol of the coin and its price
+df_price = pd.concat([df_coins.symbol,
     df_coins.quote_USD_price,
 ], axis=1,)
 
