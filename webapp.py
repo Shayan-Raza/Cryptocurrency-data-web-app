@@ -56,9 +56,6 @@ st.markdown(filedownload(df_coins), unsafe_allow_html=True)
 percent_timeframe = st.sidebar.selectbox("Percent change time frame",
                                     ["90d","60d","30d","7d","24h","1h"])
 
-#Top coins change in time_frame selected
-st.write(f"## Top coins change in {percent_timeframe}")
-
 #Preparing variables for top values based on percent_timeframe
 df_top_change = pd.concat([df.name, #Df with name and change
     df.quote_USD_percent_change_90d, 
@@ -69,30 +66,6 @@ df_top_change = pd.concat([df.name, #Df with name and change
     df.quote_USD_percent_change_1h,
 ], axis=1)
 
-price = df_top_change["name"]
-price = price.to_string(index=False)
-price = price.split()
-
-top_coins = price[-no_of_top_coins:]
-#Finding the top values for each column
-if percent_timeframe == "90d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
-elif percent_timeframe == "60d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_60d"], ascending=False)
-elif percent_timeframe == "30d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_30d"], ascending=False)
-elif percent_timeframe == "7d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_7d"], ascending=False)
-elif percent_timeframe == "24h" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_24h"], ascending=False)
-elif percent_timeframe == "1h" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_1h"], ascending=False)
-else : 
-    pass
-
-#Displaying the top values depending on the column selected
-for coins in top_coins : 
-    st.write(f"{coins}")
 
 #Preparing data for filtering according to percentage change
 df_change = pd.concat([df_coins.symbol,  
@@ -130,6 +103,34 @@ try :
 except: 
     pass
 
+#Top coins change in time_frame selected
+st.write(f"## Top coins change in {percent_timeframe}")
+
+price = df_top_change["name"]
+price = price.to_string(index=False)
+price = price.split()
+
+top_coins = price[-no_of_top_coins:]
+
+#Displaying the top values depending on the column selected
+for coins in top_coins : 
+    st.write(f"{coins}", end="")
+
+#Finding the top values for each column
+if percent_timeframe == "90d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
+elif percent_timeframe == "60d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_60d"], ascending=False)
+elif percent_timeframe == "30d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_30d"], ascending=False)
+elif percent_timeframe == "7d" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_7d"], ascending=False)
+elif percent_timeframe == "24h" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_24h"], ascending=False)
+elif percent_timeframe == "1h" : 
+    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_1h"], ascending=False)
+else : 
+    pass
 
 # Price displayer
 st.write("## Prices")
