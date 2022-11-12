@@ -57,7 +57,7 @@ percent_timeframe = st.sidebar.selectbox("Percent change time frame",
                                     ["90d","60d","30d","7d","24h","1h"])
 
 #Preparing variables for top values based on percent_timeframe
-df_top_change = pd.concat([df.name, #Df with name and change
+df_name_change = pd.concat([df.name, #name and change
     df.quote_USD_percent_change_90d, 
     df.quote_USD_percent_change_60d, 
     df.quote_USD_percent_change_30d, 
@@ -68,7 +68,7 @@ df_top_change = pd.concat([df.name, #Df with name and change
 
 
 #Preparing data for filtering according to percentage change
-df_change = pd.concat([df_coins.symbol,  
+df_symbol_change = pd.concat([df_coins.symbol, #symbols and change 
     df_coins.quote_USD_percent_change_90d, 
     df_coins.quote_USD_percent_change_60d, 
     df_coins.quote_USD_percent_change_30d, 
@@ -83,22 +83,22 @@ st.write(f"## Plot {percent_timeframe} for {selected_coin}") #Title of the plot
 #Using try and except and when user doesnt select coin theres an error
 try : 
     if percent_timeframe == "90d" : 
-        df_change["quote_USD_percent_change_90d"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_90d"].plot(kind="barh")
         st.pyplot(plt)
     elif percent_timeframe == "60d" : 
-        df_change["quote_USD_percent_change_60d"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_60d"].plot(kind="barh")
         st.pyplot(plt)
     elif percent_timeframe == "30d" : 
-        df_change["quote_USD_percent_change_30d"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_30d"].plot(kind="barh")
         st.pyplot(plt)
     elif percent_timeframe == "7d" : 
-        df_change["quote_USD_percent_change_7d"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_7d"].plot(kind="barh")
         st.pyplot(plt)
     elif percent_timeframe == "24h" : 
-        df_change["quote_USD_percent_change_24h"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_24h"].plot(kind="barh")
         st.pyplot(plt)
     elif percent_timeframe == "1h" : 
-        df_change["quote_USD_percent_change_1h"].plot(kind="barh")
+        df_symbol_change["quote_USD_percent_change_1h"].plot(kind="barh")
         st.pyplot(plt)
 except: 
     pass
@@ -106,7 +106,7 @@ except:
 #Top coins change in time_frame selected
 st.write(f"## Top coins change in {percent_timeframe}")
 
-price = df_top_change["name"]
+price = df_name_change["name"]
 price = price.to_string(index=False)
 price = price.split()
 
@@ -118,17 +118,17 @@ for coins in top_coins :
 
 #Finding the top values for each column
 if percent_timeframe == "90d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_90d"], ascending=False)
 elif percent_timeframe == "60d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_60d"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_60d"], ascending=False)
 elif percent_timeframe == "30d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_30d"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_30d"], ascending=False)
 elif percent_timeframe == "7d" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_7d"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_7d"], ascending=False)
 elif percent_timeframe == "24h" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_24h"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_24h"], ascending=False)
 elif percent_timeframe == "1h" : 
-    df_top_change = df_top_change.sort_values(by=["quote_USD_percent_change_1h"], ascending=False)
+    df_name_change = df_name_change.sort_values(by=["quote_USD_percent_change_1h"], ascending=False)
 else : 
     pass
 
